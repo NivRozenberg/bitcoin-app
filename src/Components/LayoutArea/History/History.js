@@ -6,21 +6,38 @@ import Button from '@mui/material/Button';
 import ArrowDropUpOutlinedIcon from '@mui/icons-material/ArrowDropUpOutlined';
 import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
 
+
+
+
+
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+
+
+
+
+
+
+
 class History extends Component {
 
 
     constructor() {
         super();
         this.state = {
-           
+
 
             values: [],
-            flag : 0
+            flag: 0
 
         }
 
         this.sortByDate = this.sortByDate.bind(this);
-        
+
         this.sortByDateDescending = this.sortByDateDescending.bind(this);
 
         this.sortByHigh1 = this.sortByHigh1.bind(this);
@@ -31,7 +48,7 @@ class History extends Component {
 
         this.sortByLow2 = this.sortByLow2.bind(this);
 
-        this.sortByOpen1 = this. sortByOpen1.bind(this);
+        this.sortByOpen1 = this.sortByOpen1.bind(this);
 
         this.sortByOpen2 = this.sortByOpen2.bind(this);
 
@@ -41,7 +58,7 @@ class History extends Component {
 
 
 
-       
+
 
         this.changeData = this.changeData.bind(this);
 
@@ -61,24 +78,23 @@ class History extends Component {
 
 
 
-            this.setState ({values: response.data.data})
-           
+            this.setState({ values: response.data.data })
+
             let array = this.state.values
 
-            for(let one of array){
+            for (let one of array) {
                 let date = new Date(one.Date)
-                date.setHours(date.getHours()+2)
+                date.setHours(date.getHours() + 2)
 
-                console.log(date)
 
                 one.Date = date.toLocaleString()
             }
 
-            this.setState({values: array})
-          
-          
+            this.setState({ values: array })
 
-            
+
+
+
         } catch (err) {
             console.log(err);
         }
@@ -86,379 +102,401 @@ class History extends Component {
 
 
 
-       async sortByDate(){
+    async sortByDate() {
 
 
-              let array = this.state.values
+        let array = this.state.values
 
-              array.sort((a, b) => new Date(a.Date) - new Date(b.Date))
-  
-              console.log(array);
-  
-              this.setState({values: array})
-        }
+        array.sort((a, b) => new Date(a.Date) - new Date(b.Date))
 
+        console.log(array);
 
-        sortByDateDescending(){
-            let array = this.state.values
-
-            array.sort((a, b) => new Date(b.Date) - new Date(a.Date))
-
-            console.log(array);
-
-            this.setState({values: array})
-        }
+        this.setState({ values: array })
+    }
 
 
-        sortByHigh1(){
-            let newArray = this.state.values
+    sortByDateDescending() {
+        let array = this.state.values
 
-            newArray.sort(function(a, b){return b.High-a.High});
+        array.sort((a, b) => new Date(b.Date) - new Date(a.Date))
 
-            this.setState({values: newArray})
-        }
+        console.log(array);
+
+        this.setState({ values: array })
+    }
 
 
+    sortByHigh1() {
+        let newArray = this.state.values
 
-        sortByHigh2(){
-            let newArray = this.state.values
+        newArray.sort(function (a, b) { return b.High - a.High });
 
-            newArray.sort(function(a, b){return a.High-b.High});
-
-            this.setState({values: newArray})
-        }
+        this.setState({ values: newArray })
+    }
 
 
 
-        sortByLow1(){
-            let newArray = this.state.values
+    sortByHigh2() {
+        let newArray = this.state.values
 
-            newArray.sort(function(a, b){return b.Low-a.Low});
+        newArray.sort(function (a, b) { return a.High - b.High });
 
-            this.setState({values: newArray})
-        }
-
-
-        sortByLow2(){
-            let newArray = this.state.values
-
-            newArray.sort(function(a, b){return a.Low-b.Low});
-
-            this.setState({values: newArray})
-        }
-
-
-        sortByOpen1(){
-            let newArray = this.state.values
-
-            newArray.sort(function(a, b){return  b.Open-a.Open});
-
-            this.setState({values: newArray})
-        }
-
-        sortByOpen2(){
-            let newArray = this.state.values
-
-            newArray.sort(function(a, b){return a.Open-b.Open});
-
-            this.setState({values: newArray})
-        }
+        this.setState({ values: newArray })
+    }
 
 
 
-        sortByClose1(){
-            let newArray = this.state.values
+    sortByLow1() {
+        let newArray = this.state.values
 
-            newArray.sort(function(a, b){return  b.Close-a.Close});
+        newArray.sort(function (a, b) { return b.Low - a.Low });
 
-            this.setState({values: newArray})
-        }
-
-        sortByClose2(){
-            let newArray = this.state.values
-
-            newArray.sort(function(a, b){return  a.Close-b.Close});
-
-            this.setState({values: newArray})
-        }
+        this.setState({ values: newArray })
+    }
 
 
+    sortByLow2() {
+        let newArray = this.state.values
 
-        async changeData(){
-            const response = await axios.get(`https://www.fxempire.com/api/v1/en/crypto-coin/chart/candles/histominute?aggregate=1&e=CCCAGG&fsym=BTC&tsym=usd`);
+        newArray.sort(function (a, b) { return a.Low - b.Low });
 
-        
+        this.setState({ values: newArray })
+    }
 
 
-            this.setState({values: response.data.data})
+    sortByOpen1() {
+        let newArray = this.state.values
 
-            this.setState({flag:1})
+        newArray.sort(function (a, b) { return b.Open - a.Open });
 
-            console.log(this.state.values);
+        this.setState({ values: newArray })
+    }
 
-            let d = new Date();
-            let y = d.getDate() - 1
-            let array = []
+    sortByOpen2() {
+        let newArray = this.state.values
+
+        newArray.sort(function (a, b) { return a.Open - b.Open });
+
+        this.setState({ values: newArray })
+    }
+
+
+
+    sortByClose1() {
+        let newArray = this.state.values
+
+        newArray.sort(function (a, b) { return b.Close - a.Close });
+
+        this.setState({ values: newArray })
+    }
+
+    sortByClose2() {
+        let newArray = this.state.values
+
+        newArray.sort(function (a, b) { return a.Close - b.Close });
+
+        this.setState({ values: newArray })
+    }
+
+
+
+    async changeData() {
+        const response = await axios.get(`https://www.fxempire.com/api/v1/en/crypto-coin/chart/candles/histominute?aggregate=1&e=CCCAGG&fsym=BTC&tsym=usd`);
+
+
+
+
+        this.setState({ values: response.data.data })
+
+        this.setState({ flag: 1 })
+
+        console.log(this.state.values);
+
+        let d = new Date();
+        let y = d.getDate() - 1
+        let array = []
+
+
+        for (let i of this.state.values) {
+            let f = new Date(i.Date);
+
+
+            let diff = d.getTime() - f.getTime()
+            let minutes = (diff / (1000 * 60)).toFixed(1);
+
 
             
-            for(let i of this.state.values){
-                let f = new Date(i.Date);
-                
-               
-                let diff = d.getTime() - f.getTime()
-                let minutes = (diff / (1000 * 60)).toFixed(1);
 
-      
-                console.log(minutes)
-      
-                  if(minutes <= 121 && f.getDate() > y){
-                    array.push(i);
+            if (minutes <= 121 && f.getDate() > y) {
+                array.push(i);
 
-                  }
-                  
-
-                 
-            }
-
-            for(let one of array){
-                let date = new Date(one.Date)
-                date.setHours(date.getHours()+2)
-
-                console.log(date)
-
-                one.Date = date.toLocaleString()
             }
 
 
-            console.log(array);
-            this.setState({values: array})
+
         }
 
-        async changeData2(){
-            const response = await axios.get(`https://www.fxempire.com/api/v1/en/crypto-coin/chart/candles/histominute?aggregate=1&e=CCCAGG&fsym=BTC&tsym=usd`);
-
-            this.setState({values: response.data.data})
-
-            this.setState({flag:2})
-
-            let d = new Date();
-            let y = d.getDate() - 1
-            let array = []
-
-            
-            for(let i of this.state.values){
-                let f = new Date(i.Date);
-                
-               
-                let diff = d.getTime() - f.getTime()
-                let minutes = (diff / (1000 * 60)).toFixed(1);
-      
-                console.log(minutes)
-      
-                  if(minutes <= 125 && f.getDate() > y){
-                    array.push(i);
-
-                  }
-                  
-
-            }
+        for (let one of array) {
+            let date = new Date(one.Date)
+            date.setHours(date.getHours() + 2)
 
 
-              for(let one of array){
-                let date = new Date(one.Date)
-                date.setHours(date.getHours()+2)
-
-                console.log(date)
-
-                one.Date = date.toLocaleString()
-            }
-
-            console.log(array);
-            this.setState({values: array})
+            one.Date = date.toLocaleString()
         }
 
 
+        console.log(array);
+        this.setState({ values: array })
+    }
 
-        async changeData3(){
-            const response = await axios.get(`https://www.fxempire.com/api/v1/en/crypto-coin/chart/candles/histominute?aggregate=1&e=CCCAGG&fsym=BTC&tsym=usd`);
+    async changeData2() {
+        const response = await axios.get(`https://www.fxempire.com/api/v1/en/crypto-coin/chart/candles/histominute?aggregate=1&e=CCCAGG&fsym=BTC&tsym=usd`);
 
-            this.setState({values: response.data.data})
+        this.setState({ values: response.data.data })
 
+        this.setState({ flag: 2 })
 
-            this.setState({flag:3})
-
-            let d = new Date();
-            let y = d.getDate() - 1
-            let array = []
-
-            
-            for(let i of this.state.values){
-                let f = new Date(i.Date);
-               
-                
-               
-                let diff = d.getTime() - f.getTime()
-              
-                let hours = (diff / (1000 * 60 * 60)).toFixed(1);
+        let d = new Date();
+        let y = d.getDate() - 1
+        let array = []
 
 
-                let minutes = (diff / (1000 * 60)).toFixed(1);
-                
-      
-                console.log(hours);
-      
-                  if(minutes<= 180 && f.getDate() > y){
-                    array.push(i);
+        for (let i of this.state.values) {
+            let f = new Date(i.Date);
 
-                  }
-                  
+
+            let diff = d.getTime() - f.getTime()
+            let minutes = (diff / (1000 * 60)).toFixed(1);
+
+            console.log(minutes)
+
+            if (minutes <= 125 && f.getDate() > y) {
+                array.push(i);
 
             }
 
-            for(let one of array){
-                let date = new Date(one.Date)
-                date.setHours(date.getHours()+2)
 
-                console.log(date)
+        }
 
-                one.Date = date.toLocaleString()
+
+        for (let one of array) {
+            let date = new Date(one.Date)
+            date.setHours(date.getHours() + 2)
+
+            console.log(date)
+
+            one.Date = date.toLocaleString()
+        }
+
+        console.log(array);
+        this.setState({ values: array })
+    }
+
+
+
+    async changeData3() {
+        const response = await axios.get(`https://www.fxempire.com/api/v1/en/crypto-coin/chart/candles/histominute?aggregate=1&e=CCCAGG&fsym=BTC&tsym=usd`);
+
+        this.setState({ values: response.data.data })
+
+
+        this.setState({ flag: 3 })
+
+        let d = new Date();
+        let y = d.getDate() - 1
+        let array = []
+
+
+        for (let i of this.state.values) {
+            let f = new Date(i.Date);
+
+
+
+            let diff = d.getTime() - f.getTime()
+
+            let hours = (diff / (1000 * 60 * 60)).toFixed(1);
+
+
+            let minutes = (diff / (1000 * 60)).toFixed(1);
+
+
+            console.log(hours);
+
+            if (minutes <= 180 && f.getDate() > y) {
+                array.push(i);
+
             }
 
-           
 
-            console.log(array);
-            this.setState({values: array})
+        }
+
+        for (let one of array) {
+            let date = new Date(one.Date)
+            date.setHours(date.getHours() + 2)
+
+            console.log(date)
+
+            one.Date = date.toLocaleString()
         }
 
 
 
+        console.log(array);
+        this.setState({ values: array })
+    }
 
-        async changeData4(){
-            const response = await axios.get(`https://www.fxempire.com/api/v1/en/crypto-coin/chart/candles/histohour?aggregate=1&e=CCCAGG&fsym=BTC&tsym=usd`);
 
-            this.setState({values: response.data.data})
 
-            this.setState({flag:4})
 
-            let array = this.state.values
+    async changeData4() {
+        const response = await axios.get(`https://www.fxempire.com/api/v1/en/crypto-coin/chart/candles/histohour?aggregate=1&e=CCCAGG&fsym=BTC&tsym=usd`);
 
-            for(let one of array){
-                let date = new Date(one.Date)
-                date.setHours(date.getHours()+2)
+        this.setState({ values: response.data.data })
 
-                console.log(date)
+        this.setState({ flag: 4 })
 
-                one.Date = date.toLocaleString()
-            }
+        let array = this.state.values
 
-            
-            this.setState({values: array})
+        for (let one of array) {
+            let date = new Date(one.Date)
+            date.setHours(date.getHours() + 2)
 
-            
+            console.log(date)
+
+            one.Date = date.toLocaleString()
         }
 
 
+        this.setState({ values: array })
+
+
+    }
 
 
 
 
-     render(){
 
 
-      
+    render() {
+
+
+
 
         return (
-            
+
 
 
 
             <div className="History">
-				
+
                 <Stack spacing={2} direction="row">
 
-                
-      <Button variant="contained" color={this.state.flag === 1 ? "secondary" : "primary"} onClick={this.changeData}>1 Minute</Button>
-      <Button variant="contained" color={this.state.flag === 2 ? "secondary" : "primary"} onClick={this.changeData2}>5 Minuts</Button>
-      <Button variant="contained" color={this.state.flag === 3 ? "secondary" : "primary"} onClick={this.changeData3}>1 Hour</Button>
-      <Button variant="contained" color={this.state.flag === 4 ? "secondary" : "primary"} onClick={this.changeData4}>1 Week</Button>
-    </Stack>
 
-<br/>
+                    <Button variant="contained" color={this.state.flag === 1 ? "secondary" : "primary"} onClick={this.changeData}>1 Minute</Button>
+                    <Button variant="contained" color={this.state.flag === 2 ? "secondary" : "primary"} onClick={this.changeData2}>5 Minuts</Button>
+                    <Button variant="contained" color={this.state.flag === 3 ? "secondary" : "primary"} onClick={this.changeData3}>1 Hour</Button>
+                    <Button variant="contained" color={this.state.flag === 4 ? "secondary" : "primary"} onClick={this.changeData4}>1 Week</Button>
+                </Stack>
 
-                <table border="1px" width="100%">
-                <tbody>
-                <tr>
+                <br />
 
-                    <th> 
-                        Date
-                       
-                        <ArrowDropDownOutlinedIcon className="pointer" style={{ color: "red" }} onClick={this.sortByDate}></ArrowDropDownOutlinedIcon>
-                      
-                        <ArrowDropUpOutlinedIcon className="pointer" style={{ color: "green" }} onClick={this.sortByDateDescending}></ArrowDropUpOutlinedIcon>
-                   
-                    </th>
-                    <th> 
-                         High
 
-                         <ArrowDropDownOutlinedIcon className="pointer" style={{ color: "red" }} onClick={this.sortByHigh1}></ArrowDropDownOutlinedIcon>
-                      
-                      <ArrowDropUpOutlinedIcon className="pointer" style={{ color: "green" }} onClick={this.sortByHigh2}></ArrowDropUpOutlinedIcon>
 
-                        
-                    </th>
-                    <th> 
-                        Low
-                        <ArrowDropDownOutlinedIcon className="pointer"  style={{ color: "red" }} onClick={this.sortByLow1}></ArrowDropDownOutlinedIcon>
-                      
-                      <ArrowDropUpOutlinedIcon className="pointer" style={{ color: "green" }} onClick={this.sortByLow2}></ArrowDropUpOutlinedIcon>
-                    </th>
-                    <th> 
-                        Open
+                <TableContainer >
+                    <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                        <TableHead className="test">
+                            <TableRow>
+                                <TableCell> <b>Date</b>
 
-                        <ArrowDropDownOutlinedIcon className="pointer" style={{ color: "red" }} onClick={this.sortByOpen1}></ArrowDropDownOutlinedIcon>
-                      
-                      <ArrowDropUpOutlinedIcon className="pointer" style={{ color: "green" }} onClick={this.sortByOpen2}></ArrowDropUpOutlinedIcon>
+                                    <ArrowDropDownOutlinedIcon className="pointer" style={{ color: "red" }} onClick={this.sortByDate}></ArrowDropDownOutlinedIcon>
 
-                        
-                    </th>
-                    <th> 
-                        Close
+                                    <ArrowDropUpOutlinedIcon className="pointer" style={{ color: "green" }} onClick={this.sortByDateDescending}></ArrowDropUpOutlinedIcon></TableCell>
+                                <TableCell align="right"> <b> High </b>
 
-                        <ArrowDropDownOutlinedIcon className="pointer" style={{ color: "red" }} onClick={this.sortByClose1}></ArrowDropDownOutlinedIcon>
-                      
-                      <ArrowDropUpOutlinedIcon className="pointer" style={{ color: "green" }} onClick={this.sortByClose2}></ArrowDropUpOutlinedIcon>
-                    </th>
+                                    <ArrowDropDownOutlinedIcon className="pointer" style={{ color: "red" }} onClick={this.sortByHigh1}></ArrowDropDownOutlinedIcon>
 
-                 </tr>
+                                    <ArrowDropUpOutlinedIcon className="pointer" style={{ color: "green" }} onClick={this.sortByHigh2}></ArrowDropUpOutlinedIcon></TableCell>
+                                <TableCell align="right"> <b> Low </b>
+                                    <ArrowDropDownOutlinedIcon className="pointer" style={{ color: "red" }} onClick={this.sortByLow1}></ArrowDropDownOutlinedIcon>
 
-                    {this.state.values.map(data =>
+                                    <ArrowDropUpOutlinedIcon className="pointer" style={{ color: "green" }} onClick={this.sortByLow2}></ArrowDropUpOutlinedIcon></TableCell>
+                                <TableCell align="right"> <b>Open </b>
 
-                    
+                                    <ArrowDropDownOutlinedIcon className="pointer" style={{ color: "red" }} onClick={this.sortByOpen1}></ArrowDropDownOutlinedIcon>
 
-                        <tr>
+                                    <ArrowDropUpOutlinedIcon className="pointer" style={{ color: "green" }} onClick={this.sortByOpen2}></ArrowDropUpOutlinedIcon>
+                                </TableCell>
+                                <TableCell align="right"> <b> Close </b>
 
-                            <td> 
-                                {data.Date}
-                               
-                            </td>
-                            <td> 
-                                {data.High}
-                            </td>
-                            <td> 
-                                {data.Low}
-                            </td>
-                            <td> 
-                                {data.Open}
-                            </td>
-                            <td> 
-                                {data.Close}
-                            </td>
+                                    <ArrowDropDownOutlinedIcon className="pointer" style={{ color: "red" }} onClick={this.sortByClose1}></ArrowDropDownOutlinedIcon>
 
-                        </tr>
-                    )}
-                </tbody>
-                </table>
+                                    <ArrowDropUpOutlinedIcon className="pointer" style={{ color: "green" }} onClick={this.sortByClose2}></ArrowDropUpOutlinedIcon></TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {this.state.values.map((row) => (
+                                <TableRow
+                                    key={row.Date}
+                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                >
+                                    <TableCell component="th" scope="row">{row.Date}</TableCell>
+                                    <TableCell align="right">{row.High}</TableCell>
+                                    <TableCell align="right" >{row.Low}</TableCell>
+                                    <TableCell align="right">{row.Open}</TableCell>
+                                    <TableCell align="right">{row.Close}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         );
     }
 }

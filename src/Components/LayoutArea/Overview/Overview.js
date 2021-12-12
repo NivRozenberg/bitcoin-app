@@ -19,8 +19,10 @@ import Button from '@mui/material/Button';
 
 
 
+
 class Overview extends Component {
 
+  ws = new WebSocket(' wss://wstest.fxempire.com?token=btctothemoon')
 
   constructor() {
     super();
@@ -31,17 +33,6 @@ class Overview extends Component {
 
       valuesDaily: [],
 
-      currentValue: null,
-
-      higher: true,
-
-      gap: null,
-
-      gapPercent: 0,
-
-
-      alignment: "web",
-
       flag: 3
 
     }
@@ -51,10 +42,6 @@ class Overview extends Component {
     this.Show1HourGraph = this.Show1HourGraph.bind(this);
     this.Show1WeekGraph = this.Show1WeekGraph.bind(this);
   }
-
-
-
-
 
 
 
@@ -74,14 +61,6 @@ class Overview extends Component {
 
     }
   }
-
-
-
-
-
-
-
-
 
 
 
@@ -184,7 +163,7 @@ class Overview extends Component {
 
     for (let i of this.state.values) {
       let f = new Date(i.Date);
-    
+
 
 
       let diff = d.getTime() - 2 - f.getTime()
@@ -253,11 +232,11 @@ class Overview extends Component {
 
     for (let one of this.state.valuesDaily) {
       let date1 = new Date(one.Date);
-      
+
       date1.setHours(date1.getHours() + 2);
 
       let time3 = date1.toLocaleString();
-      console.log(time3);
+     
 
       array4.push({
         date: time3,
@@ -320,7 +299,7 @@ class Overview extends Component {
                 stackId="1"
                 stroke="#ca8282"
                 fill="#82abca"
-                fillOpacity="0.1"
+                fillOpacity="0.4"
               />
             </AreaChart>
           </ResponsiveContainer>
@@ -357,20 +336,11 @@ class Overview extends Component {
                 stackId="1"
                 stroke="#ca8282"
                 fill="#82abca"
-                fillOpacity="0.1"
+                fillOpacity="0.4"
               />
             </AreaChart>
           </ResponsiveContainer>
         </div>
-
-
-
-
-
-
-
-
-
 
 
 
@@ -403,7 +373,7 @@ class Overview extends Component {
                 stackId="1"
                 stroke="#ca8282"
                 fill="#82abca"
-                fillOpacity="0.1"
+                fillOpacity="0.4"
               />
             </AreaChart>
           </ResponsiveContainer>
@@ -444,7 +414,7 @@ class Overview extends Component {
                 stackId="1"
                 stroke="#ca8282"
                 fill="#82abca"
-                fillOpacity="0.1"
+                fillOpacity="0.4"
               />
             </AreaChart>
           </ResponsiveContainer>

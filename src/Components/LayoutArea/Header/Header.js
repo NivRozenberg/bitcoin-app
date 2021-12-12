@@ -33,11 +33,12 @@ class Header extends Component {
 
       gapPercent: 0,
 
-      flag: 1
+      flag: 1,
+
 
     }
 
-  
+
 
   }
 
@@ -46,18 +47,6 @@ class Header extends Component {
 
   async componentDidMount() {
 
-    // this.ws.onopen = () => {
-    //   // on connecting, do nothing but log it to the console
-    //   const msg = {"type":"SUBSCRIBE","instruments":["cc-btc-usd-cccagg"]}
-    //   this.ws.send(JSON.stringify(msg));
-    //   }
-
-    //   this.ws.onmessage = (event) => {
-
-
-    //     this.setState({currentValue: event.data["ccbtc-usd-cccagg"].last})
-
-    // };
 
 
 
@@ -106,24 +95,69 @@ class Header extends Component {
       this.setState({ currentValue: val });
 
 
-      if (this.state.currentValue <= lastVal) {
-        this.setState({ higher: false });
+
+
+
+      this.ws.onopen = () => {
+        // on connecting, do nothing but log it to the console
+        const msg = { "type": "SUBSCRIBE", "instruments": ["cc-btc-usd-cccagg"] }
+        this.ws.send(JSON.stringify(msg));
       }
 
-      console.log(this.state.currentValue);
+      this.ws.onmessage = (event) => {
 
 
-      {
-        this.state.higher ? this.setState({ gap: (this.state.currentValue - lastVal).toFixed(2) }) :
-          this.setState({ gap: (lastVal - this.state.currentValue).toFixed(2) });
-      }
+        let test = JSON.parse(event.data)
+
+        let test2 = JSON.stringify(test)
 
 
 
-      { this.state.higher ? this.setState({ gapPercent: (lastVal / this.state.currentValue).toFixed(2) }) : this.setState({ gapPercent: (this.state.currentValue / lastVal).toFixed(2) }) }
+        let test3 = JSON.parse(test2)
+
+        let newVal = test3["cc-btc-usd-cccagg"].last
+
+        this.setState({ currentValue: newVal })
 
 
-      console.log(this.state.gapPercent);
+
+
+
+
+
+
+
+        if (this.state.currentValue <= lastVal) {
+          this.setState({ higher: false });
+        }
+
+        console.log(this.state.currentValue);
+
+
+        {
+          this.state.higher ? this.setState({ gap: (this.state.currentValue - lastVal).toFixed(2) }) :
+            this.setState({ gap: (lastVal - this.state.currentValue).toFixed(2) });
+        };
+
+
+
+        { this.state.higher ? this.setState({ gapPercent: (lastVal / this.state.currentValue).toFixed(2) }) : this.setState({ gapPercent: (this.state.currentValue / lastVal).toFixed(2) }) };
+
+
+        console.log(this.state.gapPercent);
+
+      };
+
+
+
+
+
+      this.intervalID = setInterval(
+        () => this.tick(),
+        1000
+      );
+
+
 
     } catch (err) {
       console.log(err);
@@ -132,7 +166,13 @@ class Header extends Component {
 
 
 
+  tick() {
+    this.setState({
+      date: new Date().toLocaleString()
+    });
+  }
 
+  
 
 
 
@@ -156,11 +196,11 @@ class Header extends Component {
         <br />
         <br /><br /><br />
 
-        {this.state.higher ? <div style={{ color: "green", float: "right" }}>  <ArrowDropUpOutlinedIcon ></ArrowDropUpOutlinedIcon>
-          <b> ${this.state.gap}  </b>  ||  <b> (+{this.state.gapPercent}%)  </b> </div>
+        {this.state.higher ? <div style={{ color: "green", float: "right" }}> <span> <ArrowDropUpOutlinedIcon ></ArrowDropUpOutlinedIcon> <br />
+          <b> ${this.state.gap}  </b>  ||  <b> (+{this.state.gapPercent}%)  </b> </span> </div>
 
           : <div style={{ color: "red", float: "right" }}> <span> <ArrowDropDownOutlinedIcon></ArrowDropDownOutlinedIcon> <br />
-            <b> ${this.state.gap} </b> || (-{this.state.gapPercent}%) </span> </div>}
+            <b> ${this.state.gap} </b> ||  <b> (-{this.state.gapPercent}%)  </b> </span> </div>}
 
 
 
@@ -174,6 +214,8 @@ class Header extends Component {
           </Stack>
 
         </div>
+
+
 
 
       </div>
