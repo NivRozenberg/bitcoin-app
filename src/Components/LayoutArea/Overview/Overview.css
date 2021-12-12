@@ -1,0 +1,17 @@
+.Overview {
+	
+}
+
+.show {
+    display: block;
+}
+
+.hide{
+    display: none;
+}
+
+.red{
+    background-color: red;
+
+    font-variant: inherit;
+}

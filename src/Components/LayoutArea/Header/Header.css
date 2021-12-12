@@ -1,0 +1,17 @@
+.Header {
+	height: 100%;
+    /* background-color: wheat; */
+}
+
+h1 , img{
+    float: left;
+}
+
+h2 , span{
+    float: right;
+}
+
+.buttom{
+    margin-bottom: 10px;
+    position: sticky;
+}
