@@ -2,6 +2,9 @@
   "name": "bitcoin-app",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "15.14.0"
+  },
   "dependencies": {
     "@emotion/react": "^11.7.0",
     "@emotion/styled": "^11.6.0",
