@@ -154,12 +154,12 @@ class Header extends Component {
         {this.state.higher ? <div> <h2 style={{ color: "black" }}>$ {this.state.currentValue}</h2> </div> : <h2 style={{ color: "black" }}>$ {this.state.currentValue}</h2>}
 
         <br />
-        <br /><br /><br /><br /><br />
+        <br /><br /><br />
 
         {this.state.higher ? <div style={{ color: "green", float: "right" }}>  <ArrowDropUpOutlinedIcon ></ArrowDropUpOutlinedIcon>
           <b> ${this.state.gap}  </b>  ||  <b> (+{this.state.gapPercent}%)  </b> </div>
 
-          : <div style={{ color: "green", float: "right" }}> <span> <ArrowDropDownOutlinedIcon></ArrowDropDownOutlinedIcon> <br />
+          : <div style={{ color: "red", float: "right" }}> <span> <ArrowDropDownOutlinedIcon></ArrowDropDownOutlinedIcon> <br />
             <b> ${this.state.gap} </b> || (-{this.state.gapPercent}%) </span> </div>}
 
 
